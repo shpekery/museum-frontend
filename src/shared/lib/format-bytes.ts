@@ -7,7 +7,7 @@ export const formatBytes = (
 ) => {
   const { decimals = 0, sizeType = 'normal' } = opts
 
-  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
+  const sizes = ['Байт', 'КБ', 'МБ', 'ГБ', 'ТБ']
   const accurateSizes = ['Bytes', 'KiB', 'MiB', 'GiB', 'TiB']
   if (bytes === 0) return '0 Byte'
   const i = Math.floor(Math.log(bytes) / Math.log(1024))
