@@ -1,10 +1,12 @@
 name: Lint
-on: push
+on: [push, pull_request]
 jobs:
-  build:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Install pnpm
+        run: npm install -g pnpm@latest
       - name: Install modules
         run: pnpm i
       - name: Run lint
