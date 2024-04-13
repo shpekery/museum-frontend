@@ -92,12 +92,7 @@ export default function Page() {
         <CardHeader>
           <CardTitle>Похожие изображения</CardTitle>
         </CardHeader>
-        <CardContent
-          className={cn(
-            'grid gap-8',
-            'grid-cols-2 sm:grid-cols-3 md:grid-cols-4'
-          )}
-        >
+        <CardContent className={cn('grid gap-8', 'grid-cols-2 sm:grid-cols-3')}>
           {[...Array(16)].map((_, i) => (
             <Image
               key={i + 1}
