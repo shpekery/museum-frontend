@@ -23,7 +23,7 @@ export default function Home() {
           Загрузите изображение для классификации, автоматического создания
           описания и поиска похожих изображений
         </p>
-        <MainForm className="mt-4 flex flex-col gap-12" />
+        <MainForm />
       </div>
     </main>
   )
