@@ -14,7 +14,7 @@ export const SwitchItem = forwardRef<HTMLDivElement, FieldProps>(
       <FormItem ref={ref} {...props}>
         <FormLabel
           className={cn(
-            'text-base font-normal',
+            'text-sm font-normal',
             'flex flex-row items-center justify-between',
             'cursor-pointer',
             'px-5 py-4',

@@ -38,7 +38,7 @@ export const MainForm: FC<MainFormProps> = ({ className, ...props }) => {
   const { mutate, isPending } = useMutation({
     mutationFn: Service.process,
     onSuccess: (id) => {
-      router.push(`/result?id=${id}`)
+      router.push(`/result/${id}`)
     }
   })
 
@@ -95,7 +95,7 @@ export const MainForm: FC<MainFormProps> = ({ className, ...props }) => {
               name="similar"
               render={({ field: { value, onChange } }) => (
                 <SwitchItem value={value} onChange={onChange}>
-                  Найти похожие
+                  Найти похожие изображения
                 </SwitchItem>
               )}
             />
