@@ -1,7 +1,7 @@
 import React, { type HTMLProps, forwardRef } from 'react'
 
+import { FormControl, FormItem, FormLabel, Switch } from '@/components/ui'
 import { cn } from '@/shared/lib'
-import { FormControl, FormItem, FormLabel, Switch } from '@/shared/ui'
 
 type FieldProps = Omit<HTMLProps<HTMLDivElement>, 'value'> & {
   value: boolean

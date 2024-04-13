@@ -6,7 +6,6 @@ import Link from 'next/link'
 import { ChevronLeft } from 'lucide-react'
 import { toast } from 'sonner'
 
-import { cn } from '@/shared/lib'
 import {
   type BadgeProps,
   Button,
@@ -17,7 +16,8 @@ import {
   Label,
   Textarea,
   badgeVariants
-} from '@/shared/ui'
+} from '@/components/ui'
+import { cn } from '@/shared/lib'
 
 const copyToClipboard = (text: string, success: string = 'Скопировано!') => {
   navigator.clipboard.writeText(text).then(

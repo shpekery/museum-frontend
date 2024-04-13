@@ -12,8 +12,8 @@ import Dropzone, {
 } from 'react-dropzone'
 import { toast } from 'sonner'
 
+import { Button, Progress, ScrollArea } from '@/components/ui'
 import { cn, formatBytes } from '@/shared/lib'
-import { Button, Progress, ScrollArea } from '@/shared/ui'
 
 import { useControllableState } from '../lib/hooks'
 

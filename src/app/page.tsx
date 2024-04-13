@@ -1,4 +1,4 @@
-import { MainForm } from '@/features/main-form'
+import { MainForm } from '@/components/main-form'
 import { cn } from '@/shared/lib'
 
 export default function Page() {

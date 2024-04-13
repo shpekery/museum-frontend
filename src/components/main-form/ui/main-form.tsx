@@ -6,9 +6,7 @@ import { type FC, type HTMLProps } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 
-import { FileUploader } from '@/entities/file-uploader'
-import { SwitchItem } from '@/features/main-form/ui/switch-item'
-import { cn } from '@/shared/lib'
+import { FileUploader } from '@/components/file-uploader'
 import {
   Button,
   Card,
@@ -20,10 +18,12 @@ import {
   FormField,
   FormItem,
   FormMessage
-} from '@/shared/ui'
+} from '@/components/ui'
+import { cn } from '@/shared/lib'
 
 import { formSchema } from '../lib/constants'
 import { type FormSchema } from '../lib/types'
+import { SwitchItem } from './switch-item'
 
 interface MainFormProps extends HTMLProps<HTMLFormElement> {}
 
