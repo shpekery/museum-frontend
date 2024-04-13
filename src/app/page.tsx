@@ -1,19 +1,7 @@
-'use client'
-
-import { useEffect, useState } from 'react'
-
-import { FileUploader } from '@/entities/file-uploader'
-import { SwitchCard } from '@/entities/switch-card'
+import { MainForm } from '@/features/main-form'
 import { cn } from '@/shared/lib'
-import { Button } from '@/shared/ui'
 
 export default function Home() {
-  const [files, setFiles] = useState<File[]>([])
-
-  useEffect(() => {
-    console.log(files)
-  }, [files])
-
   return (
     <main
       className={cn(
@@ -35,21 +23,7 @@ export default function Home() {
           Загрузите изображение для классификации, автоматического создания
           описания и поиска похожих изображений
         </p>
-        <div className="mt-4 flex flex-col gap-6">
-          <FileUploader
-            maxFiles={1}
-            maxSize={8 * 1024 * 1024}
-            onValueChange={setFiles}
-          />
-          <div className="flex w-full flex-col gap-3">
-            <SwitchCard>Найти похожие</SwitchCard>
-            <SwitchCard>Классифицировать</SwitchCard>
-            <SwitchCard>Сгенерировать описание</SwitchCard>
-          </div>
-        </div>
-        <Button disabled size="lg">
-          Продолжить
-        </Button>
+        <MainForm className="mt-4 flex flex-col gap-12" />
       </div>
     </main>
   )

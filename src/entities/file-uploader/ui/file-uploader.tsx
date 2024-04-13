@@ -250,7 +250,7 @@ export const FileUploader = (props: FileUploaderProps) => {
         )}
       </Dropzone>
       {files?.length ? (
-        <ScrollArea className="h-fit w-full px-3">
+        <ScrollArea className="h-fit w-full">
           <div className="max-h-48 space-y-4">
             {files?.map((file, index) => (
               <FileCard
@@ -275,7 +275,7 @@ interface FileCardProps {
 
 function FileCard({ file, progress, onRemove }: FileCardProps) {
   return (
-    <div className="relative flex items-center space-x-4">
+    <div className="relative flex items-center space-x-4 rounded-lg border bg-background p-4">
       <div className="flex flex-1 space-x-4">
         {isFileWithPreview(file) ? (
           <Image
@@ -287,7 +287,7 @@ function FileCard({ file, progress, onRemove }: FileCardProps) {
             className="aspect-square shrink-0 rounded-md object-cover"
           />
         ) : null}
-        <div className="flex w-full flex-col gap-2">
+        <div className="flex w-full flex-col justify-center gap-2">
           <div className="space-y-px">
             <p className="line-clamp-1 text-sm font-medium text-foreground/80">
               {file.name}
