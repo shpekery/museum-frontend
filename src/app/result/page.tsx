@@ -69,8 +69,12 @@ export default function Page() {
 
             <div className="grid gap-6">
               <div className="flex flex-col items-start gap-3">
-                <Label>Классификация</Label>
-                <Badge>Класс</Badge>
+                <Label>Категории</Label>
+                <div className="flex flex-wrap gap-2">
+                  <Badge>Класс маленьковый</Badge>
+                  <Badge variant="secondary">Класс побооооольше</Badge>
+                  <Badge variant="outline">Капуц какой большой класс</Badge>
+                </div>
               </div>
               <div className="grid gap-3">
                 <Label htmlFor="description">Описание</Label>
