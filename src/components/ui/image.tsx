@@ -14,12 +14,22 @@ interface ImageProps extends NextImageProps {
 
 export const Image: FC<ImageProps> = ({ src, className, ...props }) => {
   return (
-    <PhotoView src={src}>
+    <div className="relative">
       <NextImage
         src={src}
-        className={cn('cursor-zoom-in', className)}
+        className={cn('absolute bg-muted object-cover', className)}
         {...props}
       />
-    </PhotoView>
+      <PhotoView src={src}>
+        <NextImage
+          src={src}
+          className={cn(
+            'relative cursor-zoom-in object-contain backdrop-blur',
+            className
+          )}
+          {...props}
+        />
+      </PhotoView>
+    </div>
   )
 }

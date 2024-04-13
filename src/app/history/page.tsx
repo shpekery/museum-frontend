@@ -57,7 +57,7 @@ export default function Page() {
                 alt={`Изображение ${id}`}
                 width="128"
                 height="128"
-                className="size-20 rounded-md object-cover"
+                className="size-20 rounded-md"
                 onClick={(e) => e.preventDefault()}
               />
               <div className="space-y-1">

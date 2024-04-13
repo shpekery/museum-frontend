@@ -1,11 +1,11 @@
 'use client'
 
-import { type FC, type PropsWithChildren, useState } from 'react'
+import { useState } from 'react'
 
 import Link from 'next/link'
 
 import { useQuery } from '@tanstack/react-query'
-import { ChevronLeft } from 'lucide-react'
+import { ChevronLeft, Copy } from 'lucide-react'
 import { toast } from 'sonner'
 
 import {
@@ -77,7 +77,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
             {isSuccess && (
               <Image
                 alt="Загруженное изображение"
-                className="aspect-square w-full rounded-md object-cover"
+                className="aspect-square w-full rounded-md"
                 height="300"
                 src={data.photo}
                 width="300"
@@ -144,13 +144,13 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
         </Card>
       </div>
       {!(isSuccess && data.search_results.length === 0) && (
-        <div className="mx-8 max-w-screen-lg space-y-5">
+        <div className="mx-8 max-w-screen-md space-y-5">
           {isSuccess && (
             <>
               <h3 className="text-xl font-semibold leading-none tracking-tight">
                 Похожие изображения
               </h3>
-              <div className={cn('grid gap-4', 'sm:grid-cols-2')}>
+              <div className={cn('grid gap-4', 'sm:grid-cols-1')}>
                 {data.search_results.map(
                   ({ title, photo, description, categories, id }, i) => (
                     <div
@@ -162,11 +162,12 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                     >
                       <Image
                         alt={`Похожее изображение ${i + 1}`}
-                        className="aspect-square rounded-md object-cover"
                         height="300"
                         src={photo}
                         width="300"
+                        className="aspect-video rounded-md"
                       />
+
                       <div className="col-span-2 space-y-3">
                         <h4 className="text-base">
                           {title === 'None' ? 'Название отсутствует' : title}
@@ -174,7 +175,9 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                         <div className="flex flex-wrap gap-2">
                           <Categories categories={categories} />
                         </div>
-                        <Description>{description}</Description>
+                        <Description>
+                          {[...Array(i + 1)].map(() => description).join(' ')}
+                        </Description>
                       </div>
                     </div>
                   )
@@ -188,15 +191,16 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
   )
 }
 
-const Description: FC<PropsWithChildren> = ({ children }) => {
+const Description = ({ children }: { children: string }) => {
   const [open, setOpen] = useState(false)
 
-  return (
+  return children.length > 256 ? (
     <Collapsible open={open} onOpenChange={setOpen}>
       {!open && (
         <div
           className={cn(
-            'max-h-8 select-none text-sm text-muted-foreground',
+            'max-h-16',
+            'select-none text-sm text-muted-foreground',
             '[mask-image:linear-gradient(black,transparent)]'
           )}
         >
@@ -205,6 +209,13 @@ const Description: FC<PropsWithChildren> = ({ children }) => {
       )}
       <CollapsibleContent className="text-sm text-muted-foreground">
         {children}
+        <Button
+          className="ml-2 size-auto p-1 align-middle"
+          variant="outline"
+          onClick={() => copyToClipboard(children, 'Описание скопировано!')}
+        >
+          <Copy className="size-4" />
+        </Button>
       </CollapsibleContent>
       <CollapsibleTrigger asChild>
         <Button
@@ -216,6 +227,17 @@ const Description: FC<PropsWithChildren> = ({ children }) => {
         </Button>
       </CollapsibleTrigger>
     </Collapsible>
+  ) : (
+    <div className={cn('text-sm text-muted-foreground')}>
+      {children}
+      <Button
+        className="ml-2 size-auto p-1 align-middle"
+        variant="outline"
+        onClick={() => copyToClipboard(children, 'Описание скопировано!')}
+      >
+        <Copy className="size-4" />
+      </Button>
+    </div>
   )
 }
 
