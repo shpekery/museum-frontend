@@ -8,20 +8,21 @@ import { toast } from 'sonner'
 
 import { cn } from '@/shared/lib'
 import {
-  Badge,
+  type BadgeProps,
   Button,
   Card,
   CardContent,
   CardHeader,
   CardTitle,
   Label,
-  Textarea
+  Textarea,
+  badgeVariants
 } from '@/shared/ui'
 
-const copyToClipboard = (text: string) => {
+const copyToClipboard = (text: string, success: string = 'Скопировано!') => {
   navigator.clipboard.writeText(text).then(
     () => {
-      toast.success('Скопировано!')
+      toast.success(success)
     },
     (err) => {
       toast.error(`Произошла ошибка!`)
@@ -71,9 +72,25 @@ export default function Page() {
               <div className="flex flex-col items-start gap-3">
                 <Label>Категории</Label>
                 <div className="flex flex-wrap gap-2">
-                  <Badge>Класс маленьковый</Badge>
-                  <Badge variant="secondary">Класс побооооольше</Badge>
-                  <Badge variant="outline">Капуц какой большой класс</Badge>
+                  {[
+                    'Класс маленьковый',
+                    'Класс побооооольше',
+                    'Капуц какой большой класс'
+                  ].map((item, i) => (
+                    <button
+                      key={i}
+                      className={badgeVariants({
+                        variant: ['default', 'secondary', 'outline'][
+                          i
+                        ] as BadgeProps['variant']
+                      })}
+                      onClick={() =>
+                        copyToClipboard(item, 'Категория скопирована!')
+                      }
+                    >
+                      {item}
+                    </button>
+                  ))}
                 </div>
               </div>
               <div className="grid gap-3">
@@ -84,7 +101,9 @@ export default function Page() {
                   defaultValue={text}
                   className="min-h-32 resize-none"
                 />
-                <Button onClick={() => copyToClipboard(text)}>
+                <Button
+                  onClick={() => copyToClipboard(text, 'Описание скопировано!')}
+                >
                   Скопировать
                 </Button>
               </div>
