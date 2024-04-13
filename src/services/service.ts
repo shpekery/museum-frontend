@@ -16,7 +16,7 @@ export class Service {
     form.append('file', image)
 
     const response = await axios.post<number>(
-      `/search_artifact?is_search_and_categorize=${similarAndClassify}&is_generate_description=${description}`,
+      `/search_artifact?is_search_and_categorize=${similarAndClassify}&is_generate_description=${description}&user_session=${localStorage.getItem('user-id')}`,
       form
     )
 
@@ -31,7 +31,7 @@ export class Service {
 
   static async getHistory(): Promise<HistoryResult[]> {
     const response = await axios.get<HistoryResult[]>(
-      '/search_artifact/history'
+      `/search_artifact/history?user_session=${localStorage.getItem('user-id')}`
     )
 
     return response.data

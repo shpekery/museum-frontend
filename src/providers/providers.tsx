@@ -1,6 +1,6 @@
 'use client'
 
-import React, { type PropsWithChildren } from 'react'
+import React, { type PropsWithChildren, useEffect } from 'react'
 
 import {
   MutationCache,
@@ -13,6 +13,7 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/ru'
 import { PhotoProvider } from 'react-photo-view'
 import { toast } from 'sonner'
+import { v4 } from 'uuid'
 
 const queryClient = new QueryClient({
   queryCache: new QueryCache({
@@ -28,6 +29,12 @@ axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URI
 dayjs.locale('ru')
 
 export const Providers: React.FC<PropsWithChildren> = ({ children }) => {
+  useEffect(() => {
+    if (!localStorage.getItem('user-id')) {
+      localStorage.setItem('user-id', v4())
+    }
+  }, [])
+
   return (
     <PhotoProvider>
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
