@@ -1,9 +1,11 @@
 import type { Metadata } from 'next'
 import { Inter as FontSans } from 'next/font/google'
 
+import 'react-photo-view/dist/react-photo-view.css'
+
 import { Toaster } from '@/components/ui'
 import '@/global/globals.css'
-import { QueryProvider } from '@/providers'
+import { Providers } from '@/providers'
 import { cn } from '@/shared/lib'
 
 const fontSans = FontSans({
@@ -38,7 +40,7 @@ export default function RootLayout({
         >
           <div className="pointer-events-none fixed inset-0 flex items-center justify-center bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_40%,black)] dark:bg-black" />
           <div className="relative">
-            <QueryProvider>{children}</QueryProvider>
+            <Providers>{children}</Providers>
           </div>
         </main>
         <Toaster />

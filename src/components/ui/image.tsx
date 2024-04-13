@@ -1,39 +1,25 @@
 'use client'
 
-import React, { type FC, useState } from 'react'
+import React, { type FC } from 'react'
 
 import NextImage, { type ImageProps as NextImageProps } from 'next/image'
 
-import FsLightbox from 'fslightbox-react'
+import { PhotoView } from 'react-photo-view'
 
 import { cn } from '@/shared/lib'
 
 interface ImageProps extends NextImageProps {
-  sources?: string[]
-  slide?: number
   src: string
 }
 
-export const Image: FC<ImageProps> = ({
-  slide,
-  sources,
-  className,
-  ...props
-}) => {
-  const [toggler, setToggler] = useState(false)
-
+export const Image: FC<ImageProps> = ({ src, className, ...props }) => {
   return (
-    <>
-      <FsLightbox
-        slide={slide}
-        toggler={toggler}
-        sources={sources || [props.src]}
-      />
+    <PhotoView src={src}>
       <NextImage
-        onClick={() => setToggler(!toggler)}
+        src={src}
         className={cn('cursor-pointer', className)}
         {...props}
       />
-    </>
+    </PhotoView>
   )
 }

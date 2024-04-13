@@ -123,8 +123,6 @@ export default function Page() {
               className="aspect-square w-full rounded-md object-cover"
               height="300"
               src="/placeholder.svg"
-              sources={[...Array(16)].map(() => '/placeholder.svg')}
-              slide={i + 1}
               width="300"
             />
           ))}
