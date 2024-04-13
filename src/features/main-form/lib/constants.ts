@@ -11,5 +11,5 @@ export const formSchema = z
   })
   .refine(
     ({ similar, classify, description }) => similar || classify || description,
-    { message: 'Выберите хотя бы одну опцию' }
+    { message: 'Выберите хотя бы один вариант' }
   )

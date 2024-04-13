@@ -3,6 +3,8 @@
 import * as React from 'react'
 import { type FC, type HTMLProps } from 'react'
 
+import Link from 'next/link'
+
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { type z } from 'zod'
@@ -105,12 +107,15 @@ export const MainForm: FC<MainFormProps> = ({ className, ...props }) => {
           </CardContent>
           {noOptions && (
             <p className="px-5 pb-4 text-sm font-medium text-destructive">
-              Выберите хотя бы одну опцию
+              Выберите хотя бы один вариант
             </p>
           )}
         </Card>
-        <Button type="submit" size="lg" disabled={noOptions}>
-          Продолжить
+        {/*<Button type="submit" size="lg" disabled={noOptions}>*/}
+        {/*  Продолжить*/}
+        {/*</Button>*/}
+        <Button type="submit" size="lg" asChild>
+          <Link href="/result">Продолжить</Link>
         </Button>
       </form>
     </Form>
