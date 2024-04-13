@@ -3,11 +3,8 @@
 import * as React from 'react'
 import { type FC, type HTMLProps } from 'react'
 
-import Link from 'next/link'
-
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { type z } from 'zod'
 
 import { FileUploader } from '@/entities/file-uploader'
 import { SwitchItem } from '@/features/main-form/ui/switch-item'
@@ -26,11 +23,12 @@ import {
 } from '@/shared/ui'
 
 import { formSchema } from '../lib/constants'
+import { type FormSchema } from '../lib/types'
 
 interface MainFormProps extends HTMLProps<HTMLFormElement> {}
 
 export const MainForm: FC<MainFormProps> = ({ className, ...props }) => {
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       similar: true,
@@ -39,7 +37,7 @@ export const MainForm: FC<MainFormProps> = ({ className, ...props }) => {
     }
   })
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = (values: FormSchema) => {
     console.log(values)
   }
 
@@ -111,12 +109,12 @@ export const MainForm: FC<MainFormProps> = ({ className, ...props }) => {
             </p>
           )}
         </Card>
-        {/*<Button type="submit" size="lg" disabled={noOptions}>*/}
-        {/*  Продолжить*/}
-        {/*</Button>*/}
-        <Button type="submit" size="lg" asChild>
-          <Link href="/result">Продолжить</Link>
+        <Button type="submit" size="lg" disabled={noOptions}>
+          Продолжить
         </Button>
+        {/*<Button type="submit" size="lg" asChild>*/}
+        {/*  <Link href="/result">Продолжить</Link>*/}
+        {/*</Button>*/}
       </form>
     </Form>
   )
