@@ -3,7 +3,11 @@
 import * as React from 'react'
 import { type FC, type HTMLProps } from 'react'
 
+import { useRouter } from 'next/navigation'
+
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useMutation } from '@tanstack/react-query'
+import { Loader2 } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 
 import { FileUploader } from '@/components/file-uploader'
@@ -19,6 +23,7 @@ import {
   FormItem,
   FormMessage
 } from '@/components/ui'
+import { Service } from '@/services'
 import { cn } from '@/shared/lib'
 
 import { formSchema } from '../lib/constants'
@@ -28,6 +33,15 @@ import { SwitchItem } from './switch-item'
 interface MainFormProps extends HTMLProps<HTMLFormElement> {}
 
 export const MainForm: FC<MainFormProps> = ({ className, ...props }) => {
+  const router = useRouter()
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: Service.process,
+    onSuccess: (id) => {
+      router.push(`/result?id=${id}`)
+    }
+  })
+
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -37,8 +51,9 @@ export const MainForm: FC<MainFormProps> = ({ className, ...props }) => {
     }
   })
 
-  const onSubmit = (values: FormSchema) => {
-    console.log(values)
+  const onSubmit = ({ images, ...rest }: FormSchema) => {
+    console.log({ ...rest, image: images[0] })
+    mutate({ ...rest, image: images[0] })
   }
 
   const watchFields = form.watch(['similar', 'classify', 'description'])
@@ -109,12 +124,16 @@ export const MainForm: FC<MainFormProps> = ({ className, ...props }) => {
             </p>
           )}
         </Card>
-        <Button type="submit" size="lg" disabled={noOptions}>
+        <Button
+          type="submit"
+          size="lg"
+          disabled={noOptions || isPending || form.formState.isValidating}
+        >
+          {(isPending || form.formState.isValidating) && (
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          )}
           Продолжить
         </Button>
-        {/*<Button type="submit" size="lg" asChild>*/}
-        {/*  <Link href="/result">Продолжить</Link>*/}
-        {/*</Button>*/}
       </form>
     </Form>
   )
