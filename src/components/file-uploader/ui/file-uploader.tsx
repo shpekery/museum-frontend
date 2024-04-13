@@ -3,8 +3,6 @@
 import * as React from 'react'
 import { type HTMLAttributes } from 'react'
 
-import Image from 'next/image'
-
 import { Upload, X } from 'lucide-react'
 import Dropzone, {
   type DropzoneProps,
@@ -12,7 +10,7 @@ import Dropzone, {
 } from 'react-dropzone'
 import { toast } from 'sonner'
 
-import { Button, Progress, ScrollArea } from '@/components/ui'
+import { Button, Image, Progress, ScrollArea } from '@/components/ui'
 import { cn, formatBytes } from '@/shared/lib'
 
 import { useControllableState } from '../lib/hooks'

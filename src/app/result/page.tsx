@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import Link from 'next/link'
 
 import { ChevronLeft } from 'lucide-react'
@@ -13,6 +12,7 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
+  Image,
   Label,
   Textarea,
   badgeVariants
@@ -123,6 +123,8 @@ export default function Page() {
               className="aspect-square w-full rounded-md object-cover"
               height="300"
               src="/placeholder.svg"
+              sources={[...Array(16)].map(() => '/placeholder.svg')}
+              slide={i + 1}
               width="300"
             />
           ))}

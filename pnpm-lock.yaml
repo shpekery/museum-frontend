@@ -38,6 +38,9 @@ dependencies:
   clsx:
     specifier: ^2.1.0
     version: 2.1.0
+  fslightbox-react:
+    specifier: ^1.7.6
+    version: 1.7.6(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0)
   lucide-react:
     specifier: ^0.368.0
     version: 0.368.0(react@18.2.0)
@@ -79,6 +82,9 @@ devDependencies:
   '@trivago/prettier-plugin-sort-imports':
     specifier: ^4.3.0
     version: 4.3.0(prettier@3.2.5)
+  '@types/fslightbox-react':
+    specifier: ^1.7.7
+    version: 1.7.7
   '@types/node':
     specifier: ^20
     version: 20.12.7
@@ -845,6 +851,12 @@ packages:
       prettier: 3.2.5
     transitivePeerDependencies:
       - supports-color
+    dev: true
+
+  /@types/fslightbox-react@1.7.7:
+    resolution: {integrity: sha512-pp9Y7/+L4NFlMp+PdESx66EG0/m70aqg81FNlLP08dGWvRRSvNJFv08Jc91IEQkbh/C1PpokCekNCWZqpWxiyQ==}
+    dependencies:
+      '@types/react': 18.2.77
     dev: true
 
   /@types/json-schema@7.0.15:
@@ -2212,6 +2224,18 @@ packages:
     os: [darwin]
     requiresBuild: true
     optional: true
+
+  /fslightbox-react@1.7.6(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-7LN2GZRLHo2vZGKdH+BZDJUoUDkCRCLlZ5hOwtLtZplmGZQ9nqzpG54cTax7XNjbYGTWLT6BHdMiL5zOEhiRlA==}
+    peerDependencies:
+      prop-types: '>=15.6.2'
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
 
   /function-bind@1.1.2:
     resolution: {integrity: sha512-7XHNxH7qX9xG5mIwxkhumTox/MIRNcOgDrxWsMt2pAr23WHp6MrRlN7FBSFpCpr+oVO0F744iUgR82nJMfG2SA==}
