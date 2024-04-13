@@ -1,10 +1,22 @@
-export interface Result extends Photo {
+export interface ItemResult extends Photo {
   search_results: Photo[]
 }
 
 export interface Photo {
+  title: string | null
   photo: string
   description: string
-  categories: string[]
+  categories: Category[]
   id: number
+}
+
+export interface HistoryResult {
+  photo: string
+  time_created: string
+  id: 0
+}
+
+export interface Category {
+  name: string
+  accuracy: number
 }

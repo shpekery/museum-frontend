@@ -5,11 +5,10 @@ export const formSchema = z
     images: z.array(z.instanceof(File), {
       required_error: 'Загрузите изображение'
     }),
-    similar: z.boolean(),
-    classify: z.boolean(),
+    similarAndClassify: z.boolean(),
     description: z.boolean()
   })
   .refine(
-    ({ similar, classify, description }) => similar || classify || description,
+    ({ similarAndClassify, description }) => similarAndClassify || description,
     { message: 'Выберите хотя бы один вариант' }
   )

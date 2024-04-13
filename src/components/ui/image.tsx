@@ -17,7 +17,7 @@ export const Image: FC<ImageProps> = ({ src, className, ...props }) => {
     <PhotoView src={src}>
       <NextImage
         src={src}
-        className={cn('cursor-pointer', className)}
+        className={cn('cursor-zoom-in', className)}
         {...props}
       />
     </PhotoView>

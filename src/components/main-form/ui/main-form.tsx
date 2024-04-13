@@ -6,7 +6,7 @@ import { type FC, type HTMLProps } from 'react'
 import { useRouter } from 'next/navigation'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Loader2 } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 
@@ -34,10 +34,12 @@ interface MainFormProps extends HTMLProps<HTMLFormElement> {}
 
 export const MainForm: FC<MainFormProps> = ({ className, ...props }) => {
   const router = useRouter()
+  const client = useQueryClient()
 
   const { mutate, isPending } = useMutation({
     mutationFn: Service.process,
     onSuccess: (id) => {
+      client.invalidateQueries({ queryKey: ['history'] })
       router.push(`/result/${id}`)
     }
   })
@@ -45,8 +47,7 @@ export const MainForm: FC<MainFormProps> = ({ className, ...props }) => {
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      similar: true,
-      classify: true,
+      similarAndClassify: true,
       description: true
     }
   })
@@ -56,7 +57,7 @@ export const MainForm: FC<MainFormProps> = ({ className, ...props }) => {
     mutate({ ...rest, image: images[0] })
   }
 
-  const watchFields = form.watch(['similar', 'classify', 'description'])
+  const watchFields = form.watch(['similarAndClassify', 'description'])
 
   const noOptions = !watchFields.some((v) => v)
 
@@ -92,19 +93,10 @@ export const MainForm: FC<MainFormProps> = ({ className, ...props }) => {
           <CardContent className="divide-y border-t p-0">
             <FormField
               control={form.control}
-              name="similar"
+              name="similarAndClassify"
               render={({ field: { value, onChange } }) => (
                 <SwitchItem value={value} onChange={onChange}>
-                  Найти похожие изображения
-                </SwitchItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="classify"
-              render={({ field: { value, onChange } }) => (
-                <SwitchItem value={value} onChange={onChange}>
-                  Классифицировать
+                  Найти похожие изображения и классифицировать
                 </SwitchItem>
               )}
             />

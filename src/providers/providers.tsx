@@ -9,6 +9,8 @@ import {
   QueryClientProvider
 } from '@tanstack/react-query'
 import axios from 'axios'
+import dayjs from 'dayjs'
+import 'dayjs/locale/ru'
 import { PhotoProvider } from 'react-photo-view'
 import { toast } from 'sonner'
 
@@ -22,6 +24,8 @@ const queryClient = new QueryClient({
 })
 
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URI
+
+dayjs.locale('ru')
 
 export const Providers: React.FC<PropsWithChildren> = ({ children }) => {
   return (

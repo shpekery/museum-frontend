@@ -1,5 +1,7 @@
 'use client'
 
+import { type FC, type PropsWithChildren, useState } from 'react'
+
 import Link from 'next/link'
 
 import { useQuery } from '@tanstack/react-query'
@@ -7,12 +9,14 @@ import { ChevronLeft } from 'lucide-react'
 import { toast } from 'sonner'
 
 import {
-  type BadgeProps,
   Button,
   Card,
   CardContent,
   CardHeader,
   CardTitle,
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
   Image,
   Label,
   Skeleton,
@@ -21,6 +25,7 @@ import {
 } from '@/components/ui'
 import { Service } from '@/services'
 import { cn } from '@/shared/lib'
+import { type Category } from '@/types'
 
 const copyToClipboard = (text: string, success: string = 'Скопировано!') => {
   navigator.clipboard.writeText(text).then(
@@ -34,14 +39,10 @@ const copyToClipboard = (text: string, success: string = 'Скопировано
 }
 
 export default function Page({ params: { id } }: { params: { id: string } }) {
-  const { data, isPending, isError } = useQuery({
+  const { data, isSuccess } = useQuery({
     queryKey: [`result-${id}`],
-    queryFn: () => Service.get(parseInt(id))
+    queryFn: () => Service.getItem(parseInt(id))
   })
-
-  if (isError) {
-    return null
-  }
 
   return (
     <div
@@ -69,11 +70,11 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
             <CardTitle>Результат обработки</CardTitle>
           </CardHeader>
           <CardContent className="grid gap-8 sm:grid-cols-2">
-            {isPending && (
+            {!isSuccess && (
               <Skeleton className="aspect-square w-full rounded-md object-cover" />
             )}
 
-            {!isPending && (
+            {isSuccess && (
               <Image
                 alt="Загруженное изображение"
                 className="aspect-square w-full rounded-md object-cover"
@@ -85,53 +86,38 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
 
             <div className="grid gap-6">
               <div className="flex flex-col items-start gap-3">
-                {!isPending ? (
+                {isSuccess ? (
                   <Label>Категории</Label>
                 ) : (
                   <Skeleton className="h-4 w-24 rounded-md" />
                 )}
                 <div className="flex flex-wrap gap-2">
-                  {isPending &&
+                  {!isSuccess &&
                     [...Array(3)].map((_, i) => (
                       <Skeleton key={i} className="h-6 w-32 rounded-full" />
                     ))}
 
-                  {!isPending && data.categories.length === 0 && (
+                  {isSuccess && data.categories.length === 0 && (
                     <span>Отсутствуют</span>
                   )}
 
-                  {!isPending &&
-                    data.categories.map((item, i) => (
-                      <button
-                        key={i}
-                        className={badgeVariants({
-                          variant: ['default', 'secondary', 'outline'][
-                            i
-                          ] as BadgeProps['variant']
-                        })}
-                        onClick={() =>
-                          copyToClipboard(item, 'Категория скопирована!')
-                        }
-                      >
-                        {item}
-                      </button>
-                    ))}
+                  {isSuccess && <Categories categories={data.categories} />}
                 </div>
               </div>
               <div className="grid gap-3">
-                {!isPending ? (
+                {isSuccess ? (
                   <Label htmlFor="description">Описание</Label>
                 ) : (
                   <Skeleton className="h-4 w-24 rounded-md" />
                 )}
-                {isPending && (
+                {!isSuccess && (
                   <>
                     <Skeleton className="h-32 w-full rounded-md" />
                     <Skeleton className="h-10 w-full rounded-md" />
                   </>
                 )}
 
-                {!isPending && (
+                {isSuccess && (
                   <>
                     <Textarea
                       readOnly
@@ -157,36 +143,92 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
           </CardContent>
         </Card>
       </div>
-      {!(!isPending && data.search_results.length === 0) && (
-        <Card className="mx-8 w-full max-w-screen-lg">
-          <CardHeader>
-            <CardTitle>Похожие изображения</CardTitle>
-          </CardHeader>
-          <CardContent
-            className={cn('grid gap-8', 'grid-cols-2 sm:grid-cols-3')}
-          >
-            {isPending &&
-              [...Array(3)].map((_, i) => (
-                <Skeleton
-                  key={1}
-                  className="aspect-square w-full rounded-md object-cover"
-                />
-              ))}
-
-            {!isPending &&
-              data.search_results.map(({ photo }, i) => (
-                <Image
-                  key={i + 1}
-                  alt={`Похожее изображение ${i + 1}`}
-                  className="aspect-square w-full rounded-md object-cover"
-                  height="300"
-                  src={photo}
-                  width="300"
-                />
-              ))}
-          </CardContent>
-        </Card>
+      {!(isSuccess && data.search_results.length === 0) && (
+        <div className="mx-8 max-w-screen-lg space-y-5">
+          {isSuccess && (
+            <>
+              <h3 className="text-xl font-semibold leading-none tracking-tight">
+                Похожие изображения
+              </h3>
+              <div className={cn('grid gap-4', 'sm:grid-cols-2')}>
+                {data.search_results.map(
+                  ({ title, photo, description, categories, id }, i) => (
+                    <div
+                      key={id}
+                      className={cn(
+                        'rounded-lg border bg-background px-5 py-4',
+                        'grid grid-cols-3 gap-4'
+                      )}
+                    >
+                      <Image
+                        alt={`Похожее изображение ${i + 1}`}
+                        className="aspect-square rounded-md object-cover"
+                        height="300"
+                        src={photo}
+                        width="300"
+                      />
+                      <div className="col-span-2 space-y-3">
+                        <h4 className="text-base">
+                          {title === 'None' ? 'Название отсутствует' : title}
+                        </h4>
+                        <div className="flex flex-wrap gap-2">
+                          <Categories categories={categories} />
+                        </div>
+                        <Description>{description}</Description>
+                      </div>
+                    </div>
+                  )
+                )}
+              </div>
+            </>
+          )}
+        </div>
       )}
     </div>
   )
+}
+
+const Description: FC<PropsWithChildren> = ({ children }) => {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <Collapsible open={open} onOpenChange={setOpen}>
+      {!open && (
+        <div
+          className={cn(
+            'max-h-8 select-none text-sm text-muted-foreground',
+            '[mask-image:linear-gradient(black,transparent)]'
+          )}
+        >
+          {children}
+        </div>
+      )}
+      <CollapsibleContent className="text-sm text-muted-foreground">
+        {children}
+      </CollapsibleContent>
+      <CollapsibleTrigger asChild>
+        <Button
+          size="sm"
+          variant="secondary"
+          className="mt-2 h-auto px-2 py-0.5"
+        >
+          {open ? 'Скрыть описание' : 'Показать описание'}
+        </Button>
+      </CollapsibleTrigger>
+    </Collapsible>
+  )
+}
+
+const Categories = ({ categories }: { categories: Category[] }) => {
+  return categories.map(({ name }, i) => (
+    <button
+      key={i}
+      className={badgeVariants({
+        variant: i === 0 ? 'default' : i === 1 ? 'secondary' : 'outline'
+      })}
+      onClick={() => copyToClipboard(name, 'Категория скопирована!')}
+    >
+      {name}
+    </button>
+  ))
 }
