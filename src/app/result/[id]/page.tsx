@@ -5,7 +5,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 
 import { useQuery } from '@tanstack/react-query'
-import { ChevronLeft, Copy } from 'lucide-react'
+import { ChevronLeft, CircleHelp, Copy } from 'lucide-react'
 import { toast } from 'sonner'
 
 import {
@@ -21,6 +21,9 @@ import {
   Label,
   Skeleton,
   Textarea,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
   badgeVariants
 } from '@/components/ui'
 import { Service } from '@/services'
@@ -84,10 +87,25 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
               />
             )}
 
-            <div className="grid gap-6">
+            <div className="grid gap-4">
               <div className="flex flex-col items-start gap-3">
                 {isSuccess ? (
-                  <Label>Категории</Label>
+                  <div className="ju flex w-full items-center gap-1">
+                    <Label>Категории</Label>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className="ml-1 size-auto rounded-full p-1"
+                        >
+                          <CircleHelp className="size-4" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent className="text-sm">
+                        Нажмите на тег категории, чтобы скопировать его
+                      </TooltipContent>
+                    </Tooltip>
+                  </div>
                 ) : (
                   <Skeleton className="h-4 w-24 rounded-md" />
                 )}
@@ -104,38 +122,71 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                   {isSuccess && <Categories categories={data.categories} />}
                 </div>
               </div>
-              <div className="grid gap-3">
-                {isSuccess ? (
-                  <Label htmlFor="description">Описание</Label>
-                ) : (
-                  <Skeleton className="h-4 w-24 rounded-md" />
-                )}
-                {!isSuccess && (
-                  <>
-                    <Skeleton className="h-32 w-full rounded-md" />
-                    <Skeleton className="h-10 w-full rounded-md" />
-                  </>
-                )}
-
+              <div className="grid">
                 {isSuccess && (
                   <>
+                    <Label
+                      htmlFor="description-1"
+                      className="mb-2 flex w-full items-center justify-between pl-1"
+                    >
+                      <span>
+                        Описание
+                        <span className="ml-2 text-muted-foreground">#1</span>
+                      </span>
+                      <Button
+                        size="icon"
+                        variant="outline"
+                        className="size-8 p-2"
+                        onClick={() =>
+                          copyToClipboard(
+                            data.description,
+                            'Описание #1 скопировано!'
+                          )
+                        }
+                      >
+                        <Copy />
+                      </Button>
+                    </Label>
                     <Textarea
                       readOnly
-                      id="description"
+                      id="description-1"
                       defaultValue={data.description || 'Отсутствует'}
-                      className="min-h-32 resize-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                      className="min-h-20 resize-none focus-visible:ring-0 focus-visible:ring-offset-0"
                     />
-                    <Button
-                      disabled={!data.description}
-                      onClick={() =>
-                        copyToClipboard(
-                          data.description,
-                          'Описание скопировано!'
-                        )
-                      }
+                  </>
+                )}
+              </div>
+              <div className="grid">
+                {isSuccess && (
+                  <>
+                    <Label
+                      htmlFor="description-2"
+                      className="mb-2 flex w-full items-center justify-between pl-1"
                     >
-                      Скопировать
-                    </Button>
+                      <span>
+                        Описание
+                        <span className="ml-2 text-muted-foreground">#2</span>
+                      </span>
+                      <Button
+                        size="icon"
+                        variant="outline"
+                        className="size-8 p-2"
+                        onClick={() =>
+                          copyToClipboard(
+                            data.description,
+                            'Описание #2 скопировано!'
+                          )
+                        }
+                      >
+                        <Copy />
+                      </Button>
+                    </Label>
+                    <Textarea
+                      readOnly
+                      id="description-2"
+                      defaultValue={data.description || 'Отсутствует'}
+                      className="min-h-20 resize-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                    />
                   </>
                 )}
               </div>
@@ -175,9 +226,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                         <div className="flex flex-wrap gap-2">
                           <Categories categories={categories} />
                         </div>
-                        <Description>
-                          {[...Array(i + 1)].map(() => description).join(' ')}
-                        </Description>
+                        <Description>{description}</Description>
                       </div>
                     </div>
                   )
@@ -210,11 +259,11 @@ const Description = ({ children }: { children: string }) => {
       <CollapsibleContent className="text-sm text-muted-foreground">
         {children}
         <Button
-          className="ml-2 size-auto p-1 align-middle"
+          className="ml-2 size-auto p-1.5 align-middle"
           variant="outline"
           onClick={() => copyToClipboard(children, 'Описание скопировано!')}
         >
-          <Copy className="size-4" />
+          <Copy className="size-3" />
         </Button>
       </CollapsibleContent>
       <CollapsibleTrigger asChild>
@@ -231,11 +280,11 @@ const Description = ({ children }: { children: string }) => {
     <div className={cn('text-sm text-muted-foreground')}>
       {children}
       <Button
-        className="ml-2 size-auto p-1 align-middle"
+        className="ml-2 size-auto p-1.5 align-middle"
         variant="outline"
         onClick={() => copyToClipboard(children, 'Описание скопировано!')}
       >
-        <Copy className="size-4" />
+        <Copy className="size-3" />
       </Button>
     </div>
   )

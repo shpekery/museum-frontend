@@ -15,6 +15,8 @@ import { PhotoProvider } from 'react-photo-view'
 import { toast } from 'sonner'
 import { v4 } from 'uuid'
 
+import { TooltipProvider } from '@/components/ui'
+
 const queryClient = new QueryClient({
   queryCache: new QueryCache({
     onError: (error) => toast.error(`Произошла ошибка: ${error.message}`)
@@ -36,8 +38,12 @@ export const Providers: React.FC<PropsWithChildren> = ({ children }) => {
   }, [])
 
   return (
-    <PhotoProvider>
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-    </PhotoProvider>
+    <TooltipProvider>
+      <PhotoProvider>
+        <QueryClientProvider client={queryClient}>
+          {children}
+        </QueryClientProvider>
+      </PhotoProvider>
+    </TooltipProvider>
   )
 }
