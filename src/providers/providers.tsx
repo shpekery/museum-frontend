@@ -38,7 +38,7 @@ export const Providers: React.FC<PropsWithChildren> = ({ children }) => {
   }, [])
 
   return (
-    <TooltipProvider>
+    <TooltipProvider delayDuration={0}>
       <PhotoProvider>
         <QueryClientProvider client={queryClient}>
           {children}

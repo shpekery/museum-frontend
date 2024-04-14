@@ -1,4 +1,5 @@
-export interface ItemResult extends Photo {
+export interface ItemResult extends Omit<Photo, 'description'> {
+  description: string[]
   search_results: Photo[]
 }
 

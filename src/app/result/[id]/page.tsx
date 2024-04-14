@@ -122,6 +122,12 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                   {isSuccess && <Categories categories={data.categories} />}
                 </div>
               </div>
+              {!isSuccess && (
+                <div className="grid space-y-4">
+                  <Skeleton className="h-24 rounded-md" />
+                  <Skeleton className="h-24 rounded-md" />
+                </div>
+              )}
               <div className="grid">
                 {isSuccess && (
                   <>
@@ -139,7 +145,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                         className="size-8 p-2"
                         onClick={() =>
                           copyToClipboard(
-                            data.description,
+                            data.description[0],
                             'Описание #1 скопировано!'
                           )
                         }
@@ -150,7 +156,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                     <Textarea
                       readOnly
                       id="description-1"
-                      defaultValue={data.description || 'Отсутствует'}
+                      defaultValue={data.description[0] || 'Отсутствует'}
                       className="min-h-20 resize-none focus-visible:ring-0 focus-visible:ring-offset-0"
                     />
                   </>
@@ -173,7 +179,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                         className="size-8 p-2"
                         onClick={() =>
                           copyToClipboard(
-                            data.description,
+                            data.description[1],
                             'Описание #2 скопировано!'
                           )
                         }
@@ -184,7 +190,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                     <Textarea
                       readOnly
                       id="description-2"
-                      defaultValue={data.description || 'Отсутствует'}
+                      defaultValue={data.description[1] || 'Отсутствует'}
                       className="min-h-20 resize-none focus-visible:ring-0 focus-visible:ring-offset-0"
                     />
                   </>
@@ -243,7 +249,10 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
 const Description = ({ children }: { children: string }) => {
   const [open, setOpen] = useState(false)
 
-  return children.length > 256 ? (
+  const description = children === 'None' ? 'Описание отсутствует' : children
+  const noCopy = children === 'None'
+
+  return description.length > 256 ? (
     <Collapsible open={open} onOpenChange={setOpen}>
       {!open && (
         <div
@@ -253,18 +262,22 @@ const Description = ({ children }: { children: string }) => {
             '[mask-image:linear-gradient(black,transparent)]'
           )}
         >
-          {children}
+          {description}
         </div>
       )}
       <CollapsibleContent className="text-sm text-muted-foreground">
-        {children}
-        <Button
-          className="ml-2 size-auto p-1.5 align-middle"
-          variant="outline"
-          onClick={() => copyToClipboard(children, 'Описание скопировано!')}
-        >
-          <Copy className="size-3" />
-        </Button>
+        {description}
+        {!noCopy && (
+          <Button
+            className="ml-2 size-auto p-1.5 align-middle"
+            variant="outline"
+            onClick={() =>
+              copyToClipboard(description, 'Описание скопировано!')
+            }
+          >
+            <Copy className="size-3" />
+          </Button>
+        )}
       </CollapsibleContent>
       <CollapsibleTrigger asChild>
         <Button
@@ -278,14 +291,16 @@ const Description = ({ children }: { children: string }) => {
     </Collapsible>
   ) : (
     <div className={cn('text-sm text-muted-foreground')}>
-      {children}
-      <Button
-        className="ml-2 size-auto p-1.5 align-middle"
-        variant="outline"
-        onClick={() => copyToClipboard(children, 'Описание скопировано!')}
-      >
-        <Copy className="size-3" />
-      </Button>
+      {description}
+      {!noCopy && (
+        <Button
+          className="ml-2 size-auto p-1.5 align-middle"
+          variant="outline"
+          onClick={() => copyToClipboard(description, 'Описание скопировано!')}
+        >
+          <Copy className="size-3" />
+        </Button>
+      )}
     </div>
   )
 }
