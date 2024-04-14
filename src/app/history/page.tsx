@@ -63,7 +63,7 @@ export default function Page() {
               <div className="space-y-1">
                 <h4 className="text-base">Изображение #{id}</h4>
                 <p className="text-xs text-muted-foreground">
-                  Загружено {dayjs(time_created).format('D MMMM YYYY в H:MM')}
+                  Загружено {dayjs(time_created).format('D MMMM YYYY в H:mm')}
                 </p>
               </div>
             </Link>

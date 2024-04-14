@@ -11,6 +11,7 @@ import {
 import axios from 'axios'
 import dayjs from 'dayjs'
 import 'dayjs/locale/ru'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
 import { PhotoProvider } from 'react-photo-view'
 import { toast } from 'sonner'
 import { v4 } from 'uuid'
@@ -29,6 +30,7 @@ const queryClient = new QueryClient({
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URI
 
 dayjs.locale('ru')
+dayjs.extend(customParseFormat)
 
 export const Providers: React.FC<PropsWithChildren> = ({ children }) => {
   useEffect(() => {
